@@ -1,0 +1,53 @@
+<div class="grid-layout">
+  <mat-toolbar color="primary" class="header">
+    <button mat-icon-button class="example-icon" aria-label="Toggle menu button" (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>Dashboard</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon favorite-icon" aria-label="Logout button" (click)="logout()" routerLink="/login">
+      <mat-icon>exit_to_app</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="body-content">
+    <mat-sidenav #sidenav mode="over" class="menu">
+      <mat-nav-list role="menu-list" class="nav-container">
+        <a mat-list-item role="listitem" routerLink="users">
+          <mat-icon color="primary">people</mat-icon>
+          Users
+        </a>
+        <a mat-list-item role="listitem" routerLink="teams">
+          <mat-icon color="primary">store</mat-icon>
+          Teams
+        </a>
+        <a mat-list-item role="listitem" routerLink="tournaments">
+          <mat-icon color="primary">addchart</mat-icon>
+          Tournaments
+        </a>
+        <a mat-list-item role="listitem" routerLink="platforms">
+          <mat-icon color="primary">addchart</mat-icon>
+          Platforms
+        </a>
+        <a mat-list-item role="listitem" routerLink="games">
+          <mat-icon color="primary">addchart</mat-icon>
+          Games
+        </a>
+        <a mat-list-item role="listitem" routerLink="tickets">
+          <mat-icon color="primary">addchart</mat-icon>
+          Tickets
+        </a>
+        <mat-divider></mat-divider>
+        <mat-list-item role="listitem" (click)="logout()">
+          <mat-icon color="warn" class="menu-icon">exit_to_app</mat-icon>
+          Logout
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+      <!-- <router-outlet name="private"></router-outlet> -->
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
