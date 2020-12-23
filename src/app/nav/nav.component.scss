@@ -1,0 +1,30 @@
+.grid-layout {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 100%;
+  grid-template-areas: "header" "main";
+}
+
+.header {
+  grid-area: header;
+
+  .example-spacer {
+    flex: 1 1 auto;
+  }
+}
+
+.main {
+  grid-area: main;
+
+  .menu {
+    width: 220px;
+  }
+  .active {
+    background-color: rgba(226, 221, 221, 0.74);
+  }
+
+  .sidenav-content {
+    padding: 16px;
+  }
+}

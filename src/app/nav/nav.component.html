@@ -1,0 +1,35 @@
+<div class="grid-layout">
+  <mat-toolbar color="primary" class="header">
+    <button mat-icon-button class="example-icon" aria-label="Toggle menu button" (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>Dashboard</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon favorite-icon" aria-label="Logout button" (click)="logout()"
+      routerLink="/login">
+      <mat-icon>exit_to_app</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="main">
+    <mat-sidenav #sidenav mode="over" class="menu">
+      <mat-nav-list role="menu-list">
+        <a mat-list-item role="listitem" [routerLink]="link.route" routerLinkActive="active" *ngFor="let link of links">
+          <mat-icon color="primary">{{ link.icon }}</mat-icon>
+          {{ link.label }}
+        </a>
+        <mat-divider></mat-divider>
+        <mat-list-item role="listitem" (click)="logout()">
+          <mat-icon color="warn" class="menu-icon">exit_to_app</mat-icon>
+          Logout
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <div class="sidenav-content">
+        <ng-content></ng-content>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
