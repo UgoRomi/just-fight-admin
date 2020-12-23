@@ -7,8 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'just-fight-admin';
-
-  public logout(): void {
-    console.log('logout event');
-  }
 }

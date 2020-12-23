@@ -7,7 +7,7 @@ import { TeamsComponent } from './dashboard/teams/teams.component';
 import { TicketsComponent } from './dashboard/tickets/tickets.component';
 import { TournamentsComponent } from './dashboard/tournaments/tournaments.component';
 import { UsersComponent } from './dashboard/users/users.component';
-import { LoginGuard } from './guards/login.guard';
+import { AuthGuard } from './guards/auth.guard';
 import { LoginComponent } from './login/login.component';
 // import { IsAuthenticatedGuard } from './is-authenticated-guard';
 // import { IsAuthenticatedPharmaGuard } from './is-authenticated-pharma.guard';
@@ -16,12 +16,9 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
     path: 'dashboard',
-    canActivate: [LoginGuard],
+    canActivate: [AuthGuard],
+    component: DashboardComponent,
     children: [
-      {
-        path: '',
-        component: DashboardComponent,
-      },
       {
         path: 'users',
         component: UsersComponent,

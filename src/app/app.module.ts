@@ -15,6 +15,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PlatformsComponent } from './dashboard/platforms/platforms.component';
 import { GamesComponent } from './dashboard/games/games.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { NavComponent } from './nav/nav.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     TicketsComponent,
     TournamentsComponent,
     PlatformsComponent,
-    GamesComponent
+    GamesComponent,
+    NavComponent
   ],
   imports: [
     BrowserModule,
