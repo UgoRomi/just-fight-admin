@@ -5,6 +5,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Ruleset } from 'src/app/interfaces/ruleset.model';
 import { Game } from 'src/app/interfaces/game.model';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-rulesets',
@@ -19,6 +20,7 @@ export class RulesetsComponent implements OnInit {
 
   patching = false;
 
+  rulesets$ = this.apiService.getRulesets();
   games$ = this.apiService.getGames();
 
   //#region form
@@ -64,13 +66,9 @@ export class RulesetsComponent implements OnInit {
     'actions',
   ];
 
-  dataSource;
-
   constructor(private apiService: ApiService, private fb: FormBuilder) {}
 
-  ngOnInit(): void {
-    this.apiService.getRulesets().subscribe((res) => (this.dataSource = res));
-  }
+  ngOnInit() {}
 
   onChangeMinValue(value: string) {
     this.maxNumberOfPlayersPerTeam.setValidators([
@@ -85,18 +83,22 @@ export class RulesetsComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('form', this.form.valid, this.form.value);
-    if (this.patching) {
-      this.apiService
-        .createRuleset(this.form.value)
-        .subscribe(() => (this.patching = false));
-      return;
-    }
+    const body = { ...this.form.value };
 
-    this.apiService.createRuleset(this.form.value).subscribe();
+    // TODO: patch ruleset missing
+    // if (this.patching) {
+    //   this.apiService
+    //     .createRuleset(body)
+    //     .subscribe(() => (this.patching = false));
+    //   return;
+    // }
+
+    this.games$ = this.apiService
+      .createRuleset(body)
+      .pipe(switchMap(() => this.apiService.getRulesets()));
   }
 
-  add(event: MatChipInputEvent): void {
+  addChip(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
     const maps = this.maps.value;
@@ -111,7 +113,7 @@ export class RulesetsComponent implements OnInit {
     }
   }
 
-  remove(map: string): void {
+  removeChip(map: string): void {
     const maps = this.maps.value;
     const index = maps.indexOf(map);
 
@@ -127,8 +129,6 @@ export class RulesetsComponent implements OnInit {
   }
 
   patchRuleset(ruleset: Ruleset) {
-    console.log(ruleset);
-
     const patchingRuleset = { ...ruleset };
     patchingRuleset.game = (patchingRuleset.game as Partial<Game>).id;
 

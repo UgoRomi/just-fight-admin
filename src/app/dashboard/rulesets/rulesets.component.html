@@ -65,7 +65,7 @@
       <mat-chip
         *ngFor="let map of maps.value"
         removable
-        (removed)="remove(map)"
+        (removed)="removeChip(map)"
       >
         {{ map }}
         <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
@@ -75,7 +75,7 @@
         [matChipInputFor]="chipList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
         [matChipInputAddOnBlur]="addOnBlur"
-        (matChipInputTokenEnd)="add($event)"
+        (matChipInputTokenEnd)="addChip($event)"
       />
     </mat-chip-list>
   </mat-form-field>
@@ -100,7 +100,7 @@
 </form>
 
 <div class="example-container mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource">
+  <table mat-table [dataSource]="rulesets$ | async">
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef>Name</th>
       <td mat-cell *matCellDef="let element">{{ element.name }}</td>
