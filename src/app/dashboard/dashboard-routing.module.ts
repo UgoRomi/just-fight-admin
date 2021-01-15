@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { GamesComponent } from './games/games.component';
 import { PlatformsComponent } from './platforms/platforms.component';
 import { RulesetsComponent } from './rulesets/rulesets.component';
-import { TeamsComponent } from './teams/teams.component';
 import { TicketsComponent } from './tickets/tickets.component';
 import { TournamentDetailComponent } from './tournament-detail/tournament-detail.component';
 import { TournamentsComponent } from './tournaments/tournaments.component';
@@ -13,10 +12,6 @@ const routes: Routes = [
   {
     path: 'users',
     component: UsersComponent,
-  },
-  {
-    path: 'teams',
-    component: TeamsComponent,
   },
   {
     path: 'platforms',

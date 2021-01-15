@@ -11,11 +11,6 @@ export const environment = {
       label: 'Users',
       icon: 'people',
     },
-    // {
-    //   route: 'teams',
-    //   label: 'Teams',
-    //   icon: 'store',
-    // },
     {
       route: 'rulesets',
       label: 'Rulesets',
