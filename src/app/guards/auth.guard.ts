@@ -4,17 +4,15 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   UrlTree,
-  Router,
 } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { ApiService } from '../services/api.service';
-import { catchError, map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private router: Router, private apiService: ApiService) {}
+  constructor(private authService: AuthService) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -24,32 +22,6 @@ export class AuthGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (localStorage.getItem('token')) return true;
-
-    const body = this.router.getCurrentNavigation().extras.state;
-
-    if (!body || !body.email || !body.password) {
-      this.router.navigate(['/login']);
-      return false;
-    }
-
-    return this.apiService
-      .login(body as { email: string; password: string })
-      .pipe(
-        tap((response: { token: string }) => {
-          localStorage.setItem('token', response.token);
-        }),
-        map((response: { token: string }) => {
-          // TODO: return !!response.token;
-          if (response.token) {
-            return true;
-          }
-          return false;
-        }),
-        catchError((error) => {
-          console.error(error);
-          return of(false);
-        })
-      );
+    return this.authService.isAuthenticated();
   }
 }

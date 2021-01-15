@@ -1,16 +1,19 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Game } from '../interfaces/Game';
-import { User } from '../interfaces/User';
+import { tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+import { Game } from '../interfaces/game.model';
+import { Ruleset } from '../interfaces/ruleset.model';
+import { User } from '../interfaces/user.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
-  private baseUrl = 'https://for-the-players.herokuapp.com';
-  constructor(private http: HttpClient) { }
+  private baseUrl = environment.baseUrl;
+  constructor(private http: HttpClient) {}
 
-  public login(body: {email: string, password: string}) {
+  public login(body: { email: string; password: string }) {
     return this.http.post(`${this.baseUrl}/auth/login`, body);
   }
 
@@ -18,7 +21,7 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/platforms`);
   }
 
-  public addPlatform(body: {name: string, show: boolean}) {
+  public addPlatform(body: { name: string; show: boolean }) {
     return this.http.post(`${this.baseUrl}/platforms`, body);
   }
 
@@ -26,15 +29,27 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/tournaments`);
   }
 
-  public addTournament(body: {name: string, show: boolean}) {
+  public getTournament(id: string) {
+    return this.http.get(`${this.baseUrl}/tournaments/${id}`);
+  }
+
+  public createTournament(body: any) {
     return this.http.post(`${this.baseUrl}/tournaments`, body);
+  }
+
+  public deleteTournament(id: string) {
+    return this.http.delete(`${this.baseUrl}/tournaments/${id}`);
+  }
+
+  public getMatches(id: string) {
+    return this.http.get(`${this.baseUrl}/tournaments/${id}/matches`);
   }
 
   public getGames() {
     return this.http.get<Game[]>(`${this.baseUrl}/games`);
   }
 
-  public addGames(body: {name: string, show: boolean}) {
+  public createGame(body: { name: string; imgUrl: string }) {
     return this.http.post(`${this.baseUrl}/games`, body);
   }
 
@@ -46,4 +61,27 @@ export class ApiService {
     return this.http.get<User>(`${this.baseUrl}/users/${id}`);
   }
 
+  public getRulesets() {
+    return this.http.get<any[]>(`${this.baseUrl}/rulesets`);
+  }
+
+  public createRuleset(body: Partial<Ruleset>) {
+    return this.http.post(`${this.baseUrl}/rulesets`, body);
+  }
+
+  public patchRuleset(body: Partial<Ruleset>) {
+    return this.http.patch(`${this.baseUrl}/rulesets`, body);
+  }
+
+  public getTeams(tournamentId: string) {
+    return this.http.get<any[]>(
+      `${this.baseUrl}/tournaments/${tournamentId}/teams`
+    );
+  }
+
+  public getTeam(tournamentId: string, teamId: string) {
+    return this.http.get<User>(
+      `${this.baseUrl}/tournaments/${tournamentId}/teams/${teamId}`
+    );
+  }
 }

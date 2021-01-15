@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -21,11 +21,11 @@ export class LoginComponent implements OnInit {
   }
 
   goToDashboard(): void {
-    const body = { ...this.form.value };
-    this.router.navigate(['/dashboard'], { state: body });
+    const body: { email: string; password: string } = { ...this.form.value };
+    this.authService.login(body).subscribe();
   }
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(private fb: FormBuilder, private authService: AuthService) {}
 
   ngOnInit(): void {}
 }
