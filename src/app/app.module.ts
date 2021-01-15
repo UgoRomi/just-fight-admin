@@ -5,43 +5,29 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material-module';
 import { LoginComponent } from './login/login.component';
-import { TeamsComponent } from './dashboard/teams/teams.component';
-import { UsersComponent } from './dashboard/users/users.component';
-import { TicketsComponent } from './dashboard/tickets/tickets.component';
-import { TournamentsComponent } from './dashboard/tournaments/tournaments.component';
-import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { PlatformsComponent } from './dashboard/platforms/platforms.component';
-import { GamesComponent } from './dashboard/games/games.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { NavComponent } from './nav/nav.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    DashboardComponent,
-    TeamsComponent,
-    UsersComponent,
-    TicketsComponent,
-    TournamentsComponent,
-    PlatformsComponent,
-    GamesComponent,
-    NavComponent
-  ],
+  declarations: [AppComponent, LoginComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    FormsModule, 
+    FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+    }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
