@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { AuthService } from '../services/auth.service';
 
 interface NavLink {
   route: string;
@@ -9,50 +11,16 @@ interface NavLink {
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.scss']
+  styleUrls: ['./nav.component.scss'],
 })
 export class NavComponent implements OnInit {
+  links: NavLink[] = environment.links;
 
-  links: NavLink[] = [
-    {
-      route: 'users',
-      label: 'Users',
-      icon: 'people'
-    },
-    {
-      route: 'teams',
-      label: 'Teams',
-      icon: 'store'
-    },
-    {
-      route: 'tournaments',
-      label: 'Tournaments',
-      icon: 'addchart'
-    },
-    {
-      route: 'platforms',
-      label: 'Platforms',
-      icon: 'addchart'
-    },
-    {
-      route: 'games',
-      label: 'Games',
-      icon: 'addchart'
-    },
-    {
-      route: 'tickets',
-      label: 'Tickets',
-      icon: 'addchart'
-    }
-  ]
-  
-  constructor() { }
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {}
 
   public logout(): void {
-    console.log('logout event');
+    this.authService.logout();
   }
-
-  ngOnInit(): void {
-  }
-
 }
