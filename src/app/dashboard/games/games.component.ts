@@ -1,33 +1,52 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { switchMap } from 'rxjs/operators';
+import { Game } from 'src/app/interfaces/game.model';
 import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-games',
   templateUrl: './games.component.html',
-  styleUrls: ['./games.component.scss']
+  styleUrls: ['./games.component.scss'],
 })
 export class GamesComponent implements OnInit {
+  patching = false;
 
-  displayedColumns = ['name', 'show', 'actions'];
-  dataSource = ELEMENT_DATA;
+  games$ = this.apiService.getGames();
 
-  constructor(private apiService: ApiService) { }
+  displayedColumns = ['name', 'img', 'actions'];
 
-  ngOnInit(): void {
-    this.apiService.getPlatforms().subscribe()
+  form = this.fb.group({
+    name: ['', [Validators.required]],
+    imgUrl: ['', [Validators.required]],
+  });
+
+  constructor(private apiService: ApiService, private fb: FormBuilder) {}
+
+  ngOnInit() {}
+
+  onSubmit() {
+    const body = { ...this.form.value };
+
+    // TODO: patch game missing
+    // if (this.patching) {
+    //   return;
+    // }
+
+    this.games$ = this.apiService
+      .createGame(body)
+      .pipe(switchMap(() => this.apiService.getGames()));
   }
 
-}
+  patchGame(game: Game) {
+    const patchingGame = { ...game };
 
-export interface PlatformElement {
-  name: string;
-  show: boolean;
-}
+    this.form.patchValue(patchingGame);
+    this.patching = true;
+  }
 
-const ELEMENT_DATA: PlatformElement[] = [
-  {name: 'PS5', show: true},
-  {name: 'PS4', show: true},
-  {name: 'XBOX 360', show: true},
-  {name: 'Nintendo Switch', show: true},
-  {name: 'Nintendo Wii', show: true},
-];
+  resetForm() {
+    this.form.reset();
+    this.patching = false;
+  }
+}
