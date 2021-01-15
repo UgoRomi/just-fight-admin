@@ -8,28 +8,24 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  loginForm = this.fb.group({
+  form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
   });
 
   get email() {
-    return this.loginForm.get('email');
+    return this.form.get('email');
   }
   get password() {
-    return this.loginForm.get('password');
+    return this.form.get('password');
   }
 
   goToDashboard(): void {
-    const body = {
-      email: this.email.value,
-      password: this.password.value
-    }
+    const body = { ...this.form.value };
     this.router.navigate(['/dashboard'], { state: body });
   }
 
-  constructor(private fb: FormBuilder, private router : Router) {}
+  constructor(private fb: FormBuilder, private router: Router) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }
