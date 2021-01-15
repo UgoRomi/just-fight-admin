@@ -1,0 +1,152 @@
+<form class="add-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <input
+      matInput
+      placeholder="E.g. I dieci comandamenti"
+      formControlName="name"
+      required
+    />
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Description</mat-label>
+    <textarea matInput formControlName="description" required></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Game</mat-label>
+    <mat-select formControlName="game" required>
+      <mat-option value="" selected></mat-option>
+      <mat-option [value]="game.id" *ngFor="let game of games$ | async">
+        {{ game.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="form-row three">
+    <mat-form-field appearance="fill">
+      <mat-label>min players</mat-label>
+      <input
+        type="number"
+        matInput
+        min="1"
+        [max]="maxNumberOfPlayersPerTeam.value || 1"
+        formControlName="minNumberOfPlayersPerTeam"
+        (input)="onChangeMinValue($event.target.value)"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>max players</mat-label>
+      <input
+        type="number"
+        matInput
+        [min]="minNumberOfPlayersPerTeam.value || 1"
+        formControlName="maxNumberOfPlayersPerTeam"
+        (input)="onChangeMaxValue($event.target.value)"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>best of</mat-label>
+      <input type="number" matInput min="1" formControlName="bestOf" required />
+    </mat-form-field>
+  </div>
+
+  <mat-form-field>
+    <mat-label>Maps</mat-label>
+    <mat-chip-list
+      #chipList
+      aria-label="Maps selection"
+      formControlName="maps"
+      required
+    >
+      <mat-chip
+        *ngFor="let map of maps.value"
+        removable
+        (removed)="remove(map)"
+      >
+        {{ map }}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+      <input
+        placeholder="New Map..."
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="addOnBlur"
+        (matChipInputTokenEnd)="add($event)"
+      />
+    </mat-chip-list>
+  </mat-form-field>
+
+  <button
+    mat-stroked-button
+    color="primary"
+    type="submit"
+    [disabled]="form.invalid"
+  >
+    Save
+  </button>
+
+  <button
+    *ngIf="patching"
+    mat-stroked-button
+    color="secondary"
+    (click)="resetForm()"
+  >
+    Clear
+  </button>
+</form>
+
+<div class="example-container mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef>Description</th>
+      <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="game">
+      <th mat-header-cell *matHeaderCellDef>game</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.game.name }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="minNumberOfPlayersPerTeam">
+      <th mat-header-cell *matHeaderCellDef>min</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.minNumberOfPlayersPerTeam }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="maxNumberOfPlayersPerTeam">
+      <th mat-header-cell *matHeaderCellDef>max</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.maxNumberOfPlayersPerTeam }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <button
+          mat-stroked-button
+          color="accent"
+          (click)="patchRuleset(element)"
+        >
+          VIEW/EDIT
+        </button>
+        <!-- <button mat-stroked-button color="warn">Delete</button> -->
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
