@@ -1,0 +1,153 @@
+<form class="add-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-form-field hintLabel="Max 40 characters" appearance="fill">
+    <mat-label>Name</mat-label>
+    <input
+      matInput
+      #input
+      maxlength="40"
+      placeholder="e.g. PIPPO GAUDIO SENDS 500 BUCKS"
+      required
+      formControlName="name"
+    />
+    <mat-hint align="end">{{ input.value?.length || 0 }}/40</mat-hint>
+  </mat-form-field>
+
+  <div class="form-row">
+    <mat-form-field appearance="fill">
+      <mat-label>Game</mat-label>
+
+      <mat-select required formControlName="game">
+        <mat-option value="" selected></mat-option>
+        <mat-option [value]="game.id" *ngFor="let game of games$ | async">
+          {{ game.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Platform</mat-label>
+      <mat-select required formControlName="platform">
+        <mat-option value="" selected></mat-option>
+        <mat-option
+          [value]="platform._id"
+          *ngFor="let platform of platforms$ | async"
+        >
+          {{ platform.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="fill">
+      <mat-label>Show</mat-label>
+      <mat-select required formControlName="show">
+        <mat-option value="true" selected>Yes</mat-option>
+        <mat-option value="false">No</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Open</mat-label>
+      <mat-select required formControlName="open">
+        <mat-option value="true" selected>Yes</mat-option>
+        <mat-option value="false">No</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Start date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="startPicker"
+        formControlName="startsOn"
+        required
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="startPicker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker touchUi #startPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>End date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="endPicker"
+        formControlName="endsOn"
+        required
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="endPicker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker touchUi #endPicker></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="fill">
+      <mat-label>Ruleset</mat-label>
+      <mat-select required formControlName="ruleset">
+        <mat-option value="" selected></mat-option>
+        <mat-option
+          [value]="ruleset.id"
+          *ngFor="let ruleset of rulesets$ | async"
+        >
+          {{ ruleset.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Type</mat-label>
+      <mat-select required formControlName="type">
+        <mat-option value="" selected></mat-option>
+        <mat-option
+          [value]="type.value"
+          *ngFor="let type of tournamentType | keyvalue"
+        >
+          {{ type.value }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Image URL</mat-label>
+    <input
+      matInput
+      #input
+      placeholder="e.g. https://imgur.com/"
+      formControlName="imgUrl"
+    />
+  </mat-form-field>
+
+  <div>
+    <button
+      type="button"
+      mat-stroked-button
+      color="primary"
+      (click)="fileInput.click()"
+    >
+      Choose File
+    </button>
+    {{ fileName }}
+    <input
+      hidden
+      (change)="onFileSelected()"
+      #fileInput
+      type="file"
+      id="file"
+    />
+  </div>
+  <button
+    mat-stroked-button
+    color="primary"
+    type="submit"
+    [disabled]="form.invalid"
+  >
+    Save
+  </button>
+</form>
