@@ -14,7 +14,7 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   public login(body: { email: string; password: string }) {
-    return this.http.post(`${this.baseUrl}/auth/login`, body);
+    return this.http.post(`${this.baseUrl}/admin/login`, body);
   }
 
   public getPlatforms() {
@@ -61,6 +61,10 @@ export class ApiService {
     return this.http.get<User>(`${this.baseUrl}/users/${id}`);
   }
 
+  public patchUser(user: User) {
+    return this.http.patch(`${this.baseUrl}/admin/users/${user._id}`, user);
+  }
+
   public getRulesets() {
     return this.http.get<any[]>(`${this.baseUrl}/rulesets`);
   }
@@ -69,8 +73,8 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/rulesets`, body);
   }
 
-  public patchRuleset(body: Partial<Ruleset>) {
-    return this.http.patch(`${this.baseUrl}/rulesets`, body);
+  public patchRuleset(ruleset: Partial<Ruleset>) {
+    return this.http.patch(`${this.baseUrl}/rulesets/${ruleset.id}`, ruleset);
   }
 
   public getTeams(tournamentId: string) {
@@ -83,5 +87,13 @@ export class ApiService {
     return this.http.get<User>(
       `${this.baseUrl}/tournaments/${tournamentId}/teams/${teamId}`
     );
+  }
+
+  public getTickets() {
+    return this.http.get<any>(`${this.baseUrl}/admin/tickets`);
+  }
+
+  public getTicket(id: string) {
+    return this.http.get<any>(`${this.baseUrl}/tickets/${id}`);
   }
 }
