@@ -7,4 +7,5 @@ export interface Ruleset {
   game: string | Partial<Game>;
   maxNumberOfPlayersPerTeam: number;
   minNumberOfPlayersPerTeam: number;
+  maps: string[];
 }
