@@ -5,7 +5,8 @@ import { ApiService } from 'src/app/services/api.service';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Ruleset } from 'src/app/interfaces/ruleset.model';
 import { Game } from 'src/app/interfaces/game.model';
-import { switchMap } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
+import { of, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-rulesets',
@@ -25,6 +26,7 @@ export class RulesetsComponent implements OnInit {
 
   //#region form
   form = this.fb.group({
+    id: [''],
     name: ['', [Validators.required]],
     description: ['', [Validators.required]],
     game: ['', [Validators.required]],
@@ -68,7 +70,7 @@ export class RulesetsComponent implements OnInit {
 
   constructor(private apiService: ApiService, private fb: FormBuilder) {}
 
-  ngOnInit() {}
+  ngOnInit(): void {}
 
   onChangeMinValue(value: string) {
     this.maxNumberOfPlayersPerTeam.setValidators([
@@ -85,17 +87,31 @@ export class RulesetsComponent implements OnInit {
   onSubmit() {
     const body = { ...this.form.value };
 
-    // TODO: patch ruleset missing
-    // if (this.patching) {
-    //   this.apiService
-    //     .createRuleset(body)
-    //     .subscribe(() => (this.patching = false));
-    //   return;
-    // }
+    if (this.patching) {
+      this.rulesets$ = this.apiService.patchRuleset(body).pipe(
+        tap(() => {
+          this.resetForm();
+        }),
+        catchError((error) => {
+          console.error(error);
+          return of(error);
+        }),
+        switchMap(() => this.apiService.getRulesets())
+      );
 
-    this.games$ = this.apiService
-      .createRuleset(body)
-      .pipe(switchMap(() => this.apiService.getRulesets()));
+      return;
+    }
+
+    this.rulesets$ = this.apiService.createRuleset(body).pipe(
+      tap(() => {
+        this.resetForm();
+      }),
+      catchError((error) => {
+        console.error(error);
+        return of(error);
+      }),
+      switchMap(() => this.apiService.getRulesets())
+    );
   }
 
   addChip(event: MatChipInputEvent): void {
@@ -125,6 +141,7 @@ export class RulesetsComponent implements OnInit {
 
   resetForm() {
     this.form.reset();
+    this.maps.setValue([]);
     this.patching = false;
   }
 
