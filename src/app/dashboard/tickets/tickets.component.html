@@ -1,1 +1,19 @@
-<p>tickets works!</p>
+<mat-nav-list class="tickets" *ngIf="tickets$ | async as tickets">
+  <ng-container *ngFor="let ticket of tickets">
+    <a mat-list-item [routerLink]="['/dashboard/tickets/', ticket._id]">
+      <mat-icon mat-list-icon>note</mat-icon>
+
+      <h3 matLine>{{ ticket.subject }}</h3>
+      <p matLine>status: {{ ticket.status }}</p>
+
+      <p matLine>category: {{ ticket.category }}</p>
+      <small matLine>
+        created at: {{ ticket.createdAt | date: "short" }}
+      </small>
+      <small matLine>
+        updated at: {{ ticket.updatedAt | date: "short" }}
+      </small>
+    </a>
+    <mat-divider></mat-divider>
+  </ng-container>
+</mat-nav-list>
