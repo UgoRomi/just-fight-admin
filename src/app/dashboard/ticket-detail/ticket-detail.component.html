@@ -1,0 +1,17 @@
+<button mat-stroked-button color="primary" [routerLink]="['..']">BACK</button>
+<ng-container *ngIf="ticket$ | async as ticket">
+  <div>Issued at: {{ ticket.createdAt | date: "short" }}</div>
+  <div>Last updated at: {{ ticket.updatedAt | date: "short" }}</div>
+  <div>Tournament Name: {{ ticket.tournamentName }}</div>
+  <div>Match Date: {{ ticket.matchObj.acceptedDate | date: "short" }}</div>
+  <div>
+    {{ ticket.matchObj.teamOneName }} vs {{ ticket.matchObj.teamTwoName }}
+  </div>
+  <br />
+  <div>
+    messaggi:
+    <p *ngFor="let message of ticket.messages">
+      {{ message.username }}: {{ message.message }}
+    </p>
+  </div>
+</ng-container>

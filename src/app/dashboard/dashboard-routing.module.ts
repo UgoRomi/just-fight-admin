@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { GamesComponent } from './games/games.component';
 import { PlatformsComponent } from './platforms/platforms.component';
 import { RulesetsComponent } from './rulesets/rulesets.component';
+import { TicketDetailComponent } from './ticket-detail/ticket-detail.component';
 import { TicketsComponent } from './tickets/tickets.component';
 import { TournamentDetailComponent } from './tournament-detail/tournament-detail.component';
 import { TournamentsComponent } from './tournaments/tournaments.component';
@@ -20,6 +21,10 @@ const routes: Routes = [
   {
     path: 'tickets',
     component: TicketsComponent,
+  },
+  {
+    path: 'tickets/:id',
+    component: TicketDetailComponent,
   },
   {
     path: 'rulesets',

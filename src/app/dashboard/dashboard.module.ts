@@ -11,6 +11,8 @@ import { UsersComponent } from './users/users.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TournamentDetailComponent } from './tournament-detail/tournament-detail.component';
 import { RulesetsComponent } from './rulesets/rulesets.component';
+import { TicketDetailComponent } from './ticket-detail/ticket-detail.component';
+import { TicketsComponent } from './tickets/tickets.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { RulesetsComponent } from './rulesets/rulesets.component';
     NavComponent,
     TournamentDetailComponent,
     RulesetsComponent,
+    TicketsComponent,
+    TicketDetailComponent,
   ],
   imports: [
     CommonModule,
